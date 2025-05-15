@@ -1,0 +1,305 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest Timing Prediction</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1.5em 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        /* Main Section */
+        main {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 1em;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styles */
+        .prediction-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prediction-form fieldset {
+            border: none;
+            margin-bottom: 1.5em;
+        }
+
+        .prediction-form legend {
+            font-size: 1.2em;
+            margin-bottom: 0.5em;
+        }
+
+        .prediction-form label {
+            margin-bottom: 0.3em;
+            font-weight: bold;
+        }
+
+        .prediction-form select,
+        .prediction-form input {
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .prediction-form .btn {
+            padding: 0.8em;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .prediction-form .btn:hover {
+            background: #45a049;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 1em 0;
+            background: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Result Section */
+        .result {
+            margin-top: 1.5em;
+            padding: 1em;
+            background-color: #f0f8ff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Harvest Timing Prediction</h1>
+        <p>Predict the harvest timing for various crops, categorized as Food, Cash, and Emerging crops.</p>
+    </header>
+
+    <main>
+        <form class="prediction-form" id="predictionForm">
+            <!-- Crop Data -->
+            <fieldset>
+                <legend>Crop Selection</legend>
+                <label for="cropType">Select Crop:</label>
+                <select id="cropType" name="cropType" required>
+                    <option value="" disabled selected>Select a crop</option>
+                    <!-- Food Crops -->
+                    <optgroup label="Food Crops">
+                        <option value="maize">Maize</option>
+                        <option value="sorghum">Sorghum</option>
+                        <option value="rice">Rice</option>
+                        <option value="beans">Beans</option>
+                        <option value="peas">Peas</option>
+                        <option value="groundnuts">Groundnuts</option>
+                        <option value="irish_potatoes">Irish Potatoes</option>
+                        <option value="sweet_potatoes">Sweet Potatoes</option>
+                        <option value="cassava">Cassava</option>
+                        <option value="yams">Yams</option>
+                        <option value="cabbages">Cabbages</option>
+                        <option value="carrots">Carrots</option>
+                        <option value="onions">Onions</option>
+                        <option value="tomatoes">Tomatoes</option>
+                        <option value="eggplants">Eggplants</option>
+                        <option value="spinach">Spinach</option>
+                        <option value="bananas">Bananas</option>
+                        <option value="pineapples">Pineapples</option>
+                        <option value="passion_fruits">Passion Fruits</option>
+                        <option value="mangoes">Mangoes</option>
+                        <option value="avocados">Avocados</option>
+                        <option value="papayas">Papayas</option>
+                        <option value="millet">Millet</option>
+                        <option value="plantains">Plantains</option>
+                    </optgroup>
+                    <!-- Cash Crops -->
+                    <optgroup label="Cash Crops">
+                        <option value="tea">Tea</option>
+                        <option value="coffee">Coffee</option>
+                        <option value="pyrethrum">Pyrethrum</option>
+                        <option value="sugarcane">Sugarcane</option>
+                        <option value="tobacco">Tobacco</option>
+                        <option value="flowers">Flowers</option>
+                        <option value="export_vegetables">Export Vegetables</option>
+                    </optgroup>
+                    <!-- Emerging Crops -->
+                    <optgroup label="Emerging Crops">
+                        <option value="macadamia_nuts">Macadamia Nuts</option>
+                        <option value="hass_avocado">Avocado (Hass)</option>
+                        <option value="stevia">Stevia</option>
+                        <option value="soybeans">Soybeans</option>
+                    </optgroup>
+                </select>
+            </fieldset>
+
+            <!-- Planting Data -->
+            <fieldset>
+                <legend>Planting Information</legend>
+                <label for="plantingDate">Planting Date:</label>
+                <input type="date" id="plantingDate" name="plantingDate" required>
+            </fieldset>
+
+            <!-- Environmental Data -->
+            <fieldset>
+                <legend>Environmental Data</legend>
+                <label for="temperature">Average Temperature (°C):</label>
+                <input type="number" id="temperature" name="temperature" placeholder="e.g., 25" required>
+
+                <label for="rainfall">Rainfall (mm):</label>
+                <input type="number" id="rainfall" name="rainfall" placeholder="e.g., 50" required>
+
+                <label for="soilMoisture">Soil Moisture (%):</label>
+                <input type="number" id="soilMoisture" name="soilMoisture" placeholder="e.g., 30" required>
+            </fieldset>
+
+            <!-- Submit -->
+            <button type="button" class="btn" onclick="predictHarvest()">Predict Harvest Time</button>
+        </form>
+
+        <div class="result" id="result" style="display: none;"></div>
+    </main>
+
+    <footer class="footer">
+        SCHOOL OF AGRICULTURE ENGINEERING <p>&copy; UR-CAVM 2025 Harvest Prediction Tool. All rights reserved. </p>
+    </footer>
+
+    <script>
+        function predictHarvest() {
+            // Get user input
+            const cropType = document.getElementById('cropType').value;
+            const plantingDate = new Date(document.getElementById('plantingDate').value);
+
+            if (!plantingDate || !cropType) {
+                alert("Please fill all required fields!");
+                return;
+            }
+
+            // Dummy prediction logic (Replace with backend/ML integration later)
+            const mockDaysToHarvest = 120; // Replace with real data for each crop
+
+            const predictedHarvestDate = new Date(plantingDate);
+            predictedHarvestDate.setDate(predictedHarvestDate.getDate() + mockDaysToHarvest);
+
+            // Show result
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h3>Prediction Result</h3>
+                <p><strong>Crop:</strong> ${cropType}</p>
+                <p><strong>Predicted Harvest Date:</strong> ${predictedHarvestDate.toDateString()}</p>
+            `;
+        }
+        
+    function predictHarvest() {
+        // Get user input
+        const cropType = document.getElementById('cropType').value;
+        const plantingDate = new Date(document.getElementById('plantingDate').value);
+
+        if (!plantingDate || !cropType) {
+            alert("Please fill all required fields!");
+            return;
+        }
+
+        // Define crop-specific harvest durations (in days)
+        const cropHarvestDurations = {
+            // Food Crops
+            maize: 120,
+            sorghum: 120,
+            rice: 150,
+            beans: 90,
+            peas: 80,
+            groundnuts: 140,
+            irish_potatoes: 90,
+            sweet_potatoes: 120,
+            cassava: 365,
+            yams: 270,
+            cabbages: 75,
+            carrots: 80,
+            onions: 90,
+            tomatoes: 75,
+            eggplants: 90,
+            spinach: 40,
+            bananas: 365,
+            pineapples: 540,
+            passion_fruits: 240,
+            mangoes: 365,
+            avocados: 365,
+            papayas: 180,
+            millet: 120,
+            plantains: 365,
+
+            // Cash Crops
+            tea: 730,
+            coffee: 365,
+            pyrethrum: 180,
+            sugarcane: 365,
+            tobacco: 120,
+            flowers: 120,
+            export_vegetables: 75,
+
+            // Emerging Crops
+            macadamia_nuts: 730,
+            hass_avocado: 365,
+            stevia: 150,
+            soybeans: 100,
+        };
+
+        // Get harvest duration for selected crop
+        const daysToHarvest = cropHarvestDurations[cropType];
+        if (!daysToHarvest) {
+            alert("Invalid crop selected. Please try again.");
+            return;
+        }
+
+        // Calculate predicted harvest date
+        const predictedHarvestDate = new Date(plantingDate);
+        predictedHarvestDate.setDate(predictedHarvestDate.getDate() + daysToHarvest);
+
+        // Show result
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `
+            <h3>Prediction Result</h3>
+            <p><strong>Crop:</strong> ${cropType.charAt(0).toUpperCase() + cropType.slice(1)}</p>
+            <p><strong>Predicted Harvest Date:</strong> ${predictedHarvestDate.toDateString()}</p>
+        `;
+    }
+
+
+    </script>
+</body>
+</html>
